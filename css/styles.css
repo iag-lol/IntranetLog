@@ -304,54 +304,15 @@ footer {
 }
 
 /* Tablet and small laptop styles */
-@media (max-width: 1500px) and (min-width: 769px) {
+@media (min-width: 769px) and (max-width: 1500px) {
     .content-wrapper {
-        flex-direction: column;
-        margin: 0; /* Remove margin for mobile view */
+        flex-direction: row;
     }
 
     aside {
-        display: none;
-    }
-
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0.5rem 1rem; /* Adjust padding for mobile view */
-    }
-
-    header nav ul {
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        gap: 10px; /* Add spacing between links */
-    }
-
-    header nav ul li {
-        margin: 0;
-    }
-
-    .menu-icon {
         display: block;
-    }
-
-    .nav-links {
-        display: none;
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    main {
-        padding: 0.5rem 0.5rem; /* Adjust padding for mobile view */
-    }
-
-    .section {
-        margin: 0; /* Remove margin for mobile view */
-        padding: 0.7rem;
+        width: 200px;
+        height: calc(100vh - 60px);
     }
 
     .minisection-container {
