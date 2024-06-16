@@ -1,14 +1,15 @@
 const CLIENT_ID = '185859829591-esem7nmdnnctnp3c9072c7ii3brssoa1.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyBDLRSUqxX-qchAUcZYsRTO2WOzwbgVxP0';
 const SPREADSHEET_ID = '1ZMAIPcRS2hPV4pojfXWZflPQfIrOBehRvPoreotvlAI';
-
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
+let isAuthenticated = false;
 
-function gapiLoaded() {
-    gapi.load('client:auth2', initializeGapiClient);
-}
+document.addEventListener('DOMContentLoaded', function() {
+    gapi.load('client', initializeGapiClient);
+    gisLoaded();
+});
 
 async function initializeGapiClient() {
     try {
@@ -28,7 +29,17 @@ function gisLoaded() {
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: 'https://www.googleapis.com/auth/spreadsheets',
-        callback: '', // definido más tarde
+        callback: (resp) => {
+            if (resp.error !== undefined) {
+                console.error('Error during token callback:', resp);
+                showAlert('Error during token callback', true);
+                throw (resp);
+            }
+            localStorage.setItem('google_api_token', resp.access_token);
+            gapi.client.setToken({ access_token: resp.access_token });
+            isAuthenticated = true;
+            fetchData();
+        }
     });
     gisInited = true;
     maybeEnableButtons();
@@ -52,6 +63,7 @@ async function validateToken() {
         if (tokenInfo.error) {
             requestAccessToken();
         } else {
+            isAuthenticated = true;
             await fetchData();
         }
     } catch (error) {
@@ -61,16 +73,6 @@ async function validateToken() {
 }
 
 function requestAccessToken() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            console.error('Error during token callback:', resp);
-            showAlert('Error during token callback', true);
-            throw (resp);
-        }
-        localStorage.setItem('google_api_token', resp.access_token);
-        gapi.client.setToken({ access_token: resp.access_token });
-        await fetchData();
-    };
     tokenClient.requestAccessToken();
 }
 
@@ -104,6 +106,11 @@ function handleLogin() {
         return;
     }
 
+    if (!isAuthenticated) {
+        requestAccessToken();
+        return;
+    }
+
     gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
         range: 'credenciales!A2:B',
@@ -114,7 +121,7 @@ function handleLogin() {
         if (user) {
             showAlert('Acceso concedido. Redirigiendo...', false);
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'principal.html';
             }, 2000);
         } else {
             showAlert('Usuario o contraseña incorrectos.', true);
@@ -203,4 +210,7 @@ async function handleCreateAccount() {
 document.addEventListener('DOMContentLoaded', () => {
     gapiLoaded();
     gisLoaded();
+    if (!isAuthenticated) {
+        requestAccessToken();
+    }
 });
