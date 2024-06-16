@@ -8,16 +8,21 @@ let gisInited = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     gapi.load('client', initializeGapiClient);
-    gapi.load('auth2', initializeGapiClient);
+    gapi.load('auth2', gisLoaded);
 });
 
 async function initializeGapiClient() {
-    await gapi.client.init({
-        apiKey: API_KEY,
-        discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-    });
-    gapiInited = true;
-    maybeEnableButtons();
+    try {
+        await gapi.client.init({
+            apiKey: API_KEY,
+            discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
+    } catch (error) {
+        console.error('Error initializing GAPI client:', error);
+        showAlert('Error initializing GAPI client', true);
+    }
 }
 
 function gisLoaded() {
@@ -32,17 +37,42 @@ function gisLoaded() {
 
 function maybeEnableButtons() {
     if (gapiInited && gisInited) {
-        tokenClient.callback = async (resp) => {
-            if (resp.error !== undefined) {
-                console.error(resp);
-                showAlert('Error al intentar acceder a Google Sheets.', true);
-                return;
-            }
-            gapi.client.setToken(resp);
-            await fetchData();
-        };
-        tokenClient.requestAccessToken();
+        const token = localStorage.getItem('google_api_token');
+        if (token) {
+            gapi.client.setToken({ access_token: token });
+            validateToken();
+        } else {
+            requestAccessToken();
+        }
     }
+}
+
+async function validateToken() {
+    try {
+        const tokenInfo = await gapi.client.oauth2.tokeninfo({ access_token: gapi.client.getToken().access_token });
+        if (tokenInfo.error) {
+            requestAccessToken();
+        } else {
+            await fetchData();
+        }
+    } catch (error) {
+        requestAccessToken();
+        console.error('Error validating token:', error);
+    }
+}
+
+function requestAccessToken() {
+    tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            console.error('Error during token callback:', resp);
+            showAlert('Error during token callback', true);
+            throw (resp);
+        }
+        localStorage.setItem('google_api_token', resp.access_token);
+        gapi.client.setToken({ access_token: resp.access_token });
+        await fetchData();
+    };
+    tokenClient.requestAccessToken();
 }
 
 async function fetchData() {
@@ -54,7 +84,6 @@ async function fetchData() {
         const data = response.result.values;
         console.log('Data from Google Sheets:', data);
 
-        // Mostrar el valor de la celda E1 en el login
         const statusResponse = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: SPREADSHEET_ID,
             range: 'credenciales!E1',
@@ -66,10 +95,6 @@ async function fetchData() {
         showAlert('Error fetching data: ' + error.message, true);
     }
 }
-
-window.addEventListener('load', () => {
-    gisLoaded();
-});
 
 function handleLogin() {
     const username = document.getElementById('username').value;
@@ -135,8 +160,6 @@ async function handleForgotPassword() {
         return;
     }
 
-    // Aquí puedes agregar la lógica para enviar el correo de recuperación de contraseña
-
     closeForgotPassword();
     showAlert('Se ha enviado un correo de recuperación de contraseña.', false);
 }
@@ -177,3 +200,8 @@ async function handleCreateAccount() {
         showAlert('Error al crear la cuenta.', true);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    gapiLoaded();
+    gisLoaded();
+});
