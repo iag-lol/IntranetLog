@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IntraLog</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -12,13 +13,13 @@
 <body>
     <header>
         <div class="logo">IntraLog</div>
-        <nav>
-            <ul class="nav-links">
+        <span class="material-symbols-outlined menu-icon" onclick="toggleMenu()">menu</span>
+        <nav class="nav-links">
+            <ul>
                 <li><a href="#home">Inicio</a></li>
                 <li><a href="#services">Servicios</a></li>
-                <li><a href="/index.html" onclick="logout()">Cerrar Sesión</a></li>
+                <li><a href="index.html">Cerrar Sesión</a></li>
             </ul>
-            <span class="material-symbols-outlined menu-icon" onclick="toggleMenu()">menu</span>
         </nav>
     </header>
     <div class="content-wrapper">
@@ -72,3 +73,4 @@
     <div id="alert" class="alert"></div>
 </body>
 </html>
+
