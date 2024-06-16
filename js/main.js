@@ -212,7 +212,7 @@ function showAlert(message, isError = false) {
 
 function logout() {
     localStorage.removeItem('google_api_token');
-    window.location.href = 'login.html';
+    window.location.href = 'principal.html';
 }
 
 function toggleMenu() {
