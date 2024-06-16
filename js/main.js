@@ -1,14 +1,20 @@
-const API_KEY = 'AIzaSyCyVG9n1lH7sfiSF2ABW6q5Q00xLVkXDgI';
 const CLIENT_ID = '185859829591-k1bspc3ksrha9pe2o7lmh5gv8q987a2m.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyCyVG9n1lH7sfiSF2ABW6q5Q00xLVkXDgI';
 const SPREADSHEET_ID = '1ZMAIPcRS2hPV4pojfXWZflPQfIrOBehRvPoreotvlAI';
+
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 let isAuthenticated = false;
 
-function gapiLoaded() {
+document.addEventListener('DOMContentLoaded', function() {
     gapi.load('client', initializeGapiClient);
-}
+    window.onload = () => {
+        if (!isAuthenticated) {
+            gisLoaded();
+        }
+    };
+});
 
 async function initializeGapiClient() {
     try {
@@ -28,7 +34,7 @@ function gisLoaded() {
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: 'https://www.googleapis.com/auth/spreadsheets',
-        callback: '',
+        callback: '', // definido más tarde
     });
     gisInited = true;
     maybeEnableButtons();
@@ -43,8 +49,6 @@ function maybeEnableButtons() {
         } else {
             requestAccessToken();
         }
-    } else if (isAuthenticated) {
-        loadData();
     }
 }
 
@@ -55,7 +59,7 @@ async function validateToken() {
             requestAccessToken();
         } else {
             isAuthenticated = true;
-            loadData();
+            document.getElementById('sheet-status').textContent = 'CONECTADO';
         }
     } catch (error) {
         requestAccessToken();
@@ -73,7 +77,7 @@ function requestAccessToken() {
         localStorage.setItem('google_api_token', resp.access_token);
         gapi.client.setToken({ access_token: resp.access_token });
         isAuthenticated = true;
-        loadData();
+        document.getElementById('sheet-status').textContent = 'CONECTADO';
     };
     tokenClient.requestAccessToken();
 }
@@ -206,12 +210,17 @@ function showAlert(message, isError = false) {
     }, 3000);
 }
 
+function logout() {
+    localStorage.removeItem('google_api_token');
+    window.location.href = 'login.html';
+}
+
+function toggleMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     gapiLoaded();
     gisLoaded();
 });
-
-function toggleMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-}
