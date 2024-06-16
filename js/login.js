@@ -6,10 +6,9 @@ let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 
-document.addEventListener('DOMContentLoaded', function() {
-    gapi.load('client', initializeGapiClient);
-    gapi.load('auth2', gisLoaded);
-});
+function gapiLoaded() {
+    gapi.load('client:auth2', initializeGapiClient);
+}
 
 async function initializeGapiClient() {
     try {
