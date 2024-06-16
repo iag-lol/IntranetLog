@@ -102,7 +102,7 @@ main {
 
 .section {
     background: white;
-    margin: 0; /* Remove margin */
+    margin: 0;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -116,8 +116,8 @@ main {
 
 .minisection {
     background: white;
-    margin: 5px; /* Reduced margin */
-    padding: 10px; /* Reduced padding */
+    margin: 5px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex: 1 1 30%;
@@ -132,16 +132,16 @@ main {
 .styled-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px; /* Reduced margin */
-    font-size: 0.7rem; /* Reduce font size */
+    margin-top: 10px;
+    font-size: 0.7rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .styled-table th, .styled-table td {
-    padding: 4px; /* Reduced padding */
-    text-align: left;
+    padding: 3px;
+    text-align: center;
     border: 1px solid #ddd;
-    white-space: nowrap; /* Prevent text from wrapping */
+    white-space: nowrap; 
 }
 
 .styled-table th {
@@ -180,7 +180,7 @@ main {
 .btn {
     background-color: #224e9d;
     color: white;
-    padding: 8px 16px; /* Adjust button padding */
+    padding: 8px 16px; 
     margin: 10px 0;
     border: none;
     border-radius: 5px;
@@ -238,7 +238,7 @@ footer {
 @media (max-width: 768px) {
     .content-wrapper {
         flex-direction: column;
-        margin: 0; /* Remove margin for mobile view */
+        margin: 0; 
     }
 
     aside {
@@ -248,13 +248,13 @@ footer {
     header {
         flex-direction: column;
         align-items: flex-start;
-        padding: 0.5rem 1rem; /* Adjust padding for mobile view */
+        padding: 0.5rem 1rem; 
     }
 
     header nav ul {
         flex-direction: column;
         width: 100%;
-        gap: 10px; /* Add spacing between links */
+        gap: 10px; 
     }
 
     header nav ul li {
@@ -276,11 +276,11 @@ footer {
     }
 
     main {
-        padding: 0.5rem 0.5rem; /* Adjust padding for mobile view */
+        padding: 0.5rem 0.5rem;
     }
 
     .section {
-        margin: 0; /* Remove margin for mobile view */
+        margin: 0; 
         padding: 0.7rem;
     }
 
@@ -291,19 +291,19 @@ footer {
 
     .minisection {
         max-width: 100%;
-        margin: 0.5rem 0; /* Reduced margin */
+        margin: 0.5rem 0;
     }
 
     .styled-table {
-        font-size: 0.6rem; /* Further reduced font size */
+        font-size: 0.6rem; 
     }
 
     .styled-table th, .styled-table td {
-        padding: 4px; /* Further reduced padding */
+        padding: 3px;
     }
 }
 
-/* Tablet and small laptop styles */
+
 @media (min-width: 769px) and (max-width: 1500px) {
     .content-wrapper {
         flex-direction: row;
@@ -322,15 +322,15 @@ footer {
 
     .minisection {
         max-width: 100%;
-        margin: 0.5rem 0; /* Reduced margin */
+        margin: 0.5rem 0;
     }
 
     .styled-table {
-        font-size: 0.6rem; /* Further reduced font size */
+        font-size: 0.6rem; 
     }
 
     .styled-table th, .styled-table td {
-        padding: 4px; /* Further reduced padding */
+        padding: 3px; 
     }
 }
 
