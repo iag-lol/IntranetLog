@@ -1,6 +1,8 @@
+/* Estilos avanzados para Login */
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     background: linear-gradient(135deg, #224e9d, #f5f5f5);
     display: flex;
     justify-content: center;
@@ -12,56 +14,91 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 20px;
+  }
+  
+  .login-card {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-box h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
+  }
+  
+  .login-card h1 {
+    margin-bottom: 20px;
     color: #224e9d;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-  }
-  
-  .input-group label {
+    font-size: 24px;
     font-weight: bold;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .form-group label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
   }
   
-  .input-group input {
+  .form-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    background: #224e9d;
-    color: white;
-    border: none;
-    border-radius: 4px;
     font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s;
   }
   
-  button:hover {
+  .form-group input:focus {
+    border-color: #224e9d;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(34, 78, 157, 0.5);
+  }
+  
+  #login-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: #224e9d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  #login-button:hover {
     background: #1a3d7c;
+    transform: translateY(-2px);
+  }
+  
+  #login-button:active {
+    transform: translateY(0);
   }
   
   .error-msg {
+    margin-top: 15px;
     color: red;
     font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
     display: none;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 20px;
+    }
+  
+    .login-card h1 {
+      font-size: 20px;
+    }
+  
+    #login-button {
+      font-size: 14px;
+    }
   }
   
